@@ -3,11 +3,13 @@ package models
 import (
 	"database/sql"
 	"errors"
+	"os"
+	"path/filepath"
 	"time"
 )
 
 type Post struct {
-	ID      int
+	ID      string
 	Title   string
 	Slug    string
 	Content string
@@ -23,13 +25,19 @@ func (pm *PostModel) GetBySlug(slug string) (Post, error) {
 	stmt := `SELECT id, title, slug, content, created, updated FROM posts WHERE slug=$1`
 	row := pm.DB.QueryRow(stmt, slug)
 	var p Post
-	err := row.Scan(&p.ID, &p.Title, &p.Slug, &p.Content, &p.Created, &p.Updated)
+	err := row.Scan(&p.ID, &p.Title, &p.Slug, &p.Created, &p.Updated)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return Post{}, ErrNoRecord
 		}
 		return Post{}, err
 	}
+	filename := filepath.Join("ui", "posts", slug+".html")
+	content, err := os.ReadFile(filename)
+	if err != nil {
+		return Post{}, ErrNoRecord
+	}
+	p.Content = string(content)
 	return p, nil
 }
 
@@ -43,7 +51,7 @@ func (pm *PostModel) GetAll() ([]Post, error) {
 	var posts []Post
 	for rows.Next() {
 		var p Post
-		err = rows.Scan(&p.ID, &p.Title, &p.Slug, &p.Content, &p.Created, &p.Updated)
+		err = rows.Scan(&p.ID, &p.Title, &p.Slug, &p.Created, &p.Updated)
 		if err != nil {
 			return nil, err
 		}

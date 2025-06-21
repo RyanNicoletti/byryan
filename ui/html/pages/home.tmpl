@@ -4,11 +4,9 @@
 
 {{define "main"}}
 {{ range.Posts }}
-<article>
-  <p>
-    <a href="/post/{{.Slug}}">{{.Title}}</a>
-    <time>{{.Created}}</time>
-  </p>
-</article>
+<p>
+  <a href="/post/{{.Slug}}">{{.Title}}</a>
+  <time>{{.Created}}</time>
+</p>
 {{ end }}
 {{ end }}
