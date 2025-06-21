@@ -1,0 +1,25 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  line-height: 1.5;
+}
+
+a {
+  color: #31b1cb;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #31b1cb;
+  text-decoration: underline;
+}
