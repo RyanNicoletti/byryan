@@ -7,6 +7,7 @@ import (
 	"log/slog"
 
 	"byryan.net/internal/models"
+	_ "github.com/lib/pq"
 )
 
 type Config struct {

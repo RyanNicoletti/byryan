@@ -19,20 +19,6 @@ type PostModel struct {
 	DB *sql.DB
 }
 
-func (pm *PostModel) Get(id int) (Post, error) {
-	stmt := `SELECT id, title, slug, content, created, updated FROM posts WHERE id=$1`
-	row := pm.DB.QueryRow(stmt, id)
-	var p Post
-	err := row.Scan(&p.ID, &p.Title, &p.Slug, &p.Content, &p.Created, &p.Updated)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return Post{}, ErrNoRecord
-		}
-		return Post{}, err
-	}
-	return p, nil
-}
-
 func (pm *PostModel) GetBySlug(slug string) (Post, error) {
 	stmt := `SELECT id, title, slug, content, created, updated FROM posts WHERE slug=$1`
 	row := pm.DB.QueryRow(stmt, slug)
