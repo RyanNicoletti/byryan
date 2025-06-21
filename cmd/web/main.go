@@ -12,7 +12,7 @@ import (
 
 func main() {
 	addr := flag.String("addr", ":4000", "HTTP network address")
-	dsn := flag.String("dsn", "./byryan.db", "SQLite data source name/file path")
+	dsn := flag.String("dsn", "postgres://ryannicoletti@localhost/byryan?sslmode=disable", "PostgreSQL data source name")
 	flag.Parse()
 
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
