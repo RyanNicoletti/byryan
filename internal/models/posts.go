@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"errors"
+	"html/template"
 	"os"
 	"path/filepath"
 	"time"
@@ -14,7 +15,7 @@ type Post struct {
 	ID      string
 	Title   string
 	Slug    string
-	Content string
+	Content template.HTML
 	Tags    []string
 	Created time.Time
 	Updated time.Time
@@ -40,7 +41,7 @@ func (pm *PostModel) GetBySlug(slug string) (Post, error) {
 	if err != nil {
 		return Post{}, ErrNoRecord
 	}
-	p.Content = string(content)
+	p.Content = template.HTML(string(content))
 	return p, nil
 }
 
