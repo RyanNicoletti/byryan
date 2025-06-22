@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
+	"html/template"
 	"log/slog"
 
 	"byryan.net/internal/models"
@@ -16,9 +17,10 @@ type Config struct {
 }
 
 type Application struct {
-	Logger *slog.Logger
-	DB     *sql.DB
-	Posts  *models.PostModel
+	Logger        *slog.Logger
+	DB            *sql.DB
+	TemplateCache map[string]*template.Template
+	Posts         *models.PostModel
 }
 
 func Load() (*Config, error) {
@@ -43,10 +45,11 @@ func (c *Config) validate() error {
 	return nil
 }
 
-func NewApplication(logger *slog.Logger, db *sql.DB) *Application {
+func NewApplication(logger *slog.Logger, db *sql.DB, templateCache map[string]*template.Template) *Application {
 	return &Application{
-		Logger: logger,
-		DB:     db,
-		Posts:  &models.PostModel{DB: db},
+		Logger:        logger,
+		DB:            db,
+		TemplateCache: templateCache,
+		Posts:         &models.PostModel{DB: db},
 	}
 }

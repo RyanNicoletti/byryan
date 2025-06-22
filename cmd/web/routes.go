@@ -12,7 +12,7 @@ func routes(app *config.Application) *http.ServeMux {
 	mux.Handle("GET /static/", http.StripPrefix("/static", fileServer))
 
 	mux.Handle("GET /{$}", home(app))
-	mux.Handle("GET /post/{postID}", postView(app))
+	mux.Handle("GET /post/{slug}", postView(app))
 	mux.Handle("GET /post/{postID}/comments", commentsView(app))
 	mux.Handle("POST /comment/create", createComment(app))
 	mux.Handle("GET /about", about(app))

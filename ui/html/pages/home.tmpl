@@ -6,7 +6,7 @@
 {{ range.Posts }}
 <p>
   <a href="/post/{{.Slug}}">{{.Title}}</a>
-  <time>{{.Created}}</time>
+  <time datetime="{{.Created.Format "2006-01-02"}}">({{.Created.Format "02 January 2006"}})</time>
 </p>
 {{ end }}
 {{ end }}

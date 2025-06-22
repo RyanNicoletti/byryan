@@ -28,7 +28,13 @@ func main() {
 
 	defer db.Close()
 
-	app := config.NewApplication(logger, db)
+	templateCache, err := newTemplateCache()
+	if err != nil {
+		logger.Error(err.Error())
+		os.Exit(1)
+	}
+
+	app := config.NewApplication(logger, db, templateCache)
 
 	logger.Info("starting server", slog.String("addr", cfg.Addr))
 	err = http.ListenAndServe(cfg.Addr, routes(app))

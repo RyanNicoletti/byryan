@@ -6,6 +6,8 @@ import (
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/lib/pq"
 )
 
 type Post struct {
@@ -13,6 +15,7 @@ type Post struct {
 	Title   string
 	Slug    string
 	Content string
+	Tags    []string
 	Created time.Time
 	Updated time.Time
 }
@@ -22,17 +25,17 @@ type PostModel struct {
 }
 
 func (pm *PostModel) GetBySlug(slug string) (Post, error) {
-	stmt := `SELECT id, title, slug, content, created, updated FROM posts WHERE slug=$1`
+	stmt := `SELECT id, title, slug, tags, created, updated FROM posts WHERE slug=$1`
 	row := pm.DB.QueryRow(stmt, slug)
 	var p Post
-	err := row.Scan(&p.ID, &p.Title, &p.Slug, &p.Created, &p.Updated)
+	err := row.Scan(&p.ID, &p.Title, &p.Slug, pq.Array(&p.Tags), &p.Created, &p.Updated)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return Post{}, ErrNoRecord
 		}
 		return Post{}, err
 	}
-	filename := filepath.Join("ui", "posts", slug+".html")
+	filename := filepath.Join("ui", "html", "posts", slug+".html")
 	content, err := os.ReadFile(filename)
 	if err != nil {
 		return Post{}, ErrNoRecord
@@ -51,7 +54,7 @@ func (pm *PostModel) GetAll() ([]Post, error) {
 	var posts []Post
 	for rows.Next() {
 		var p Post
-		err = rows.Scan(&p.ID, &p.Title, &p.Slug, &p.Created, &p.Updated)
+		err = rows.Scan(&p.ID, &p.Title, &p.Slug, pq.Array(&p.Tags), &p.Created, &p.Updated)
 		if err != nil {
 			return nil, err
 		}
