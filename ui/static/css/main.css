@@ -23,3 +23,7 @@ a:hover {
   color: #31b1cb;
   text-decoration: underline;
 }
+
+.hidden {
+  display: none;
+}
