@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS posts (
-    id uuid DEFAULT gen_random_uuid(),
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     title text NOT NULL,
     slug text NOT NULL,
     tags text[],

@@ -21,6 +21,7 @@ type Application struct {
 	DB            *sql.DB
 	TemplateCache map[string]*template.Template
 	Posts         *models.PostModel
+	Comments      *models.CommentModel
 }
 
 func Load() (*Config, error) {
@@ -51,5 +52,6 @@ func NewApplication(logger *slog.Logger, db *sql.DB, templateCache map[string]*t
 		DB:            db,
 		TemplateCache: templateCache,
 		Posts:         &models.PostModel{DB: db},
+		Comments:      &models.CommentModel{DB: db},
 	}
 }

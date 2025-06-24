@@ -34,6 +34,24 @@
             <p id="cancel-comment-btn">cancel</p>
         </div>
     </form>
+    <div class="comments-container">
+        {{if .Comments}}
+        {{range .Comments}}
+        <div class="comment">
+            <h3>{{.Name}}</h3>
+            {{if .Website}}
+            <a href="{{.Website}}" target="_blank" rel="noopener">{{.Website}}</a>
+            {{end}}
+            <time datetime="{{.Created.Format "2006-01-02T15:04:05Z07:00"}}">
+                    {{.Created.Format "January 2, 2006 at 3:04 PM"}}
+                </time>
+            <div>{{.Content}}</div>
+        </div>
+        {{end}}
+        {{else}}
+        <div>No comments yet!</div>
+        {{end}}
+    </div>
 </section>
     <script src="../../static/js/comments.js" type="text/javascript"></script>
 {{ end }}
