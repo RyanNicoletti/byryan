@@ -30,12 +30,17 @@ body {
   display: flex;
 }
 
+header {
+  border: solid black 2px;
+  margin: 2rem 15rem 0 15rem;
+  padding: 10px;
+}
+
 .page-nav {
   display: flex;
   justify-content: center;
   gap: 9rem;
-  margin: 2rem 15rem 0 15rem;
-  border: solid black 2px;
+  margin: 0.5rem 0 0 0;
 }
 
 .main-tmpl {

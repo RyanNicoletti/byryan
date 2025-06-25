@@ -13,11 +13,7 @@
       <main class="page-main">
         <header>
           {{template "nav" .}}
-          {{if template "page-intro" .}}
-          <div class="page-intro">
-            {{template "page-intro" .}}
-          </div>
-          {{ end }}
+          {{block "page-intro" .}}{{ end }}
         </header>
         <div class="main-tmpl">{{template "main" .}}</div>
       </main>
