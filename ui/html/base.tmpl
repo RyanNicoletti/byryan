@@ -9,15 +9,23 @@
     <link rel="stylesheet" href="/static/css/main.css" />
   </head>
   <body>
-    {{template "nav" .}}
-    <header>
-      <h1>
-        {{template "header" .}}
-      </h1>
-    </header>
-    <main>{{template "main" .}}</main>
+    <div class="wrapper">
+      <main class="page-main">
+        <header>
+          {{template "nav" .}}
+          {{if template "page-intro" .}}
+          <div class="page-intro">
+            {{template "page-intro" .}}
+          </div>
+          {{ end }}
+        </header>
+        <div class="main-tmpl">{{template "main" .}}</div>
+      </main>
+      <footer class="page-footer">
+        &copy; {{.CurrentYear}} Ryan Nicoletti
+      </footer>
+    </div>
     <script src="/static/js/main.js" type="text/javascript"></script>
-    <footer>&copy; {{.CurrentYear}} Ryan Nicoletti</footer>
   </body>
 </html>
 {{ end }}
