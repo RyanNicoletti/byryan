@@ -10,11 +10,10 @@
   </head>
   <body>
     <div class="wrapper">
+      <header>
+        {{template "nav" .}}
+      </header>
       <main class="page-main">
-        <header>
-          {{template "nav" .}}
-          {{block "page-intro" .}}{{ end }}
-        </header>
         <div class="main-tmpl">{{template "main" .}}</div>
       </main>
       <footer class="page-footer">
