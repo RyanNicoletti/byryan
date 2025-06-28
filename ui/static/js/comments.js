@@ -3,6 +3,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const cancelCommentBtn = document.getElementById("cancel-comment-btn");
   const form = document.getElementById("add-comment-form");
 
+  if (form && form.dataset.hasErrors === "true") {
+    form.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+
   function toggleCommentForm() {
     form.classList.toggle("hidden");
   }

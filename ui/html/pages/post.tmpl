@@ -19,15 +19,7 @@
         <p id="add-comment-btn">add a comment</p>
     </div>
 
-    <form action="/comment/create" method="POST" id="add-comment-form" class="hidden">
-         {{if .Form}}
-            <script>
-                document.getElementById('add-comment-form').scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            </script>
-        {{end}}
+    <form action="/comment/create" method="POST" id="add-comment-form" class="{{if not .Form.FieldErrors}}hidden{{end}}">
         <input type="hidden" name="post_id" value="{{.Post.ID}}">
         <div>
             <label>Name</label>
@@ -48,7 +40,7 @@
             {{with .Form.FieldErrors.comment}}
                 <label class="error">{{.}}</label>
             {{end}}
-            <textarea name="comment"></textarea>
+            <textarea name="comment" value="{{.Form.Comment}}"></textarea>
         </div>
         <div>
             <input type='submit' value='submit'>
