@@ -102,6 +102,80 @@ body {
   column-gap: 2rem;
 }
 
+/* Add comment form */
+#add-comment-form {
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  padding: 16px;
+  background-color: var(--bg-secondary);
+}
+
+#add-comment-form div {
+  margin-bottom: 1rem;
+}
+
+#add-comment-form div:last-child {
+  margin-bottom: 0;
+}
+
+#add-comment-form label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+#add-comment-form input[type="text"],
+#add-comment-form input[type="url"],
+#add-comment-form textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border-medium);
+  border-radius: 4px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: inherit;
+}
+
+#add-comment-form input[type="text"]:focus,
+#add-comment-form input[type="url"]:focus,
+#add-comment-form textarea:focus {
+  outline: none;
+  border-color: var(--accent-green);
+}
+
+#add-comment-form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+#add-comment-form input[type="submit"] {
+  background-color: var(--primary-green);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+#add-comment-form input[type="submit"]:hover {
+  background-color: var(--accent-green);
+}
+
+#cancel-comment-btn {
+  color: var(--text-secondary);
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+#cancel-comment-btn:hover {
+  color: var(--text-primary);
+}
+
 #add-comment-btn {
   color: var(--primary-green);
 }

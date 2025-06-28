@@ -32,7 +32,6 @@ func routes(app *config.Application) http.Handler {
 
 	mux.Handle("GET /{$}", home(app))
 	mux.Handle("GET /post/{slug}", postView(app))
-	mux.Handle("GET /post/{postID}/comments", commentsView(app))
 	mux.Handle("POST /comment/create", createComment(app))
 	mux.Handle("GET /about", about(app))
 	mux.Handle("GET /arcade", arcade(app))

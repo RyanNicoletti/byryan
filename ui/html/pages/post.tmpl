@@ -18,17 +18,36 @@
         <h4>Comments</h4>
         <p id="add-comment-btn">add a comment</p>
     </div>
+
     <form action="/comment/create" method="POST" id="add-comment-form" class="hidden">
+         {{if .Form}}
+            <script>
+                document.getElementById('add-comment-form').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            </script>
+        {{end}}
+        <input type="hidden" name="post_id" value="{{.Post.ID}}">
         <div>
             <label>Name</label>
-            <input type="text" name="name">
+            {{with .Form.FieldErrors.name}}
+                <label class="error">{{.}}</label>
+            {{end}}
+            <input type="text" name="name" value="{{.Form.Name}}">
         </div>
         <div>
             <label>Website/Social Media (optional)</label>
-            <input type="text" name="website">
+            {{with .Form.FieldErrors.website}}
+                <label class="error">{{.}}</label>
+            {{end}}
+            <input type="url" name="website">
         </div>
         <div>
             <label>Comment</label>
+            {{with .Form.FieldErrors.comment}}
+                <label class="error">{{.}}</label>
+            {{end}}
             <textarea name="comment"></textarea>
         </div>
         <div>
@@ -41,7 +60,7 @@
     <div class="comments-container">
         {{if .Comments}}
         {{range .Comments}}
-        <div class="comment">
+        <div class="comment" id="comment-{{.ID}}">
             <div class="ts">
                 <time class="comment-timestamp" datetime="{{.Created.Format "2006-01-02T15:04:05Z07:00"}}">
                 {{.Created.Format "01/02/2006 3:04 PM"}}
@@ -50,7 +69,7 @@
             <div class="name-website">
                 <h4>{{.Name}}</h4>
                 {{if .Website}}
-                <a href="{{.Website}}" target="_blank" rel="noopener">{{.Website}}</a>
+                <a href="{{.Website}}" target="_blank" rel="noopener noreferrer">{{.Website}}</a>
                 {{end}}
             </div>
             <p>{{.Content}}</p>

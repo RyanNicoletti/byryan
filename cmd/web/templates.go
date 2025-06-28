@@ -17,6 +17,7 @@ type templateData struct {
 	Post        models.Post
 	Posts       []models.Post
 	Comments    []models.Comment
+	Form        any
 }
 
 func newTemplateData() templateData {

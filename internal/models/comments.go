@@ -40,8 +40,8 @@ func (cm *CommentModel) GetByPostId(postID string) ([]Comment, error) {
 	return comments, nil
 }
 
-func (cm *CommentModel) Insert(name string, website *string, content string, postID string) (string, error) {
-	stmt := `INSERT INTO comments (name, website, content, postid, created) VALUES ($1, $2, $3, $4, NOW()) RETURNING id`
+func (cm *CommentModel) Insert(name string, website string, content string, postID string) (string, error) {
+	stmt := `INSERT INTO comments (name, website, content, post_id, created) VALUES ($1, $2, $3, $4, NOW()) RETURNING id`
 	var id string
 	err := cm.DB.QueryRow(stmt, name, website, content, postID).Scan(&id)
 	if err != nil {

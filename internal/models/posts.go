@@ -25,6 +25,26 @@ type PostModel struct {
 	DB *sql.DB
 }
 
+func (pm *PostModel) GetById(id string) (Post, error) {
+	stmt := `SELECT id, title, slug, tags, created, updated FROM posts WHERE id=$1`
+	row := pm.DB.QueryRow(stmt, id)
+	var p Post
+	err := row.Scan(&p.ID, &p.Title, &p.Slug, pq.Array(&p.Tags), &p.Created, &p.Updated)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return Post{}, ErrNoRecord
+		}
+		return Post{}, err
+	}
+	filename := filepath.Join("ui", "html", "posts", p.Slug+".html")
+	content, err := os.ReadFile(filename)
+	if err != nil {
+		return Post{}, ErrNoRecord
+	}
+	p.Content = template.HTML(string(content))
+	return p, nil
+}
+
 func (pm *PostModel) GetBySlug(slug string) (Post, error) {
 	stmt := `SELECT id, title, slug, tags, created, updated FROM posts WHERE slug=$1`
 	row := pm.DB.QueryRow(stmt, slug)
