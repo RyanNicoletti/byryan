@@ -33,7 +33,7 @@
             {{with .Form.FieldErrors.website}}
                 <label class="error">{{.}}</label>
             {{end}}
-            <input type="url" name="website">
+            <input type="url" name="website" value="{{.Form.website}}">
         </div>
         <div>
             <label>Comment</label>

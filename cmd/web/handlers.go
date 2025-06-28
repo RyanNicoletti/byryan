@@ -74,20 +74,21 @@ func createComment(app *config.Application) http.Handler {
 		formData := commentFormData{
 			Name:        r.PostForm.Get("name"),
 			Comment:     r.PostForm.Get("comment"),
+			Website:     r.PostForm.Get("website"),
 			FieldErrors: map[string]string{},
 		}
 
 		postId := r.PostForm.Get("post_id")
 
-		website, err := url.Parse(r.PostForm.Get("website"))
+		u, err := url.Parse(formData.Website)
 		if err != nil {
 			formData.FieldErrors["website"] = "Invalid URL"
 		}
 
-		formData.Website = website.String()
+		url := u.String()
 
-		if !strings.HasPrefix(formData.Website, "http://") && !strings.HasPrefix(formData.Website, "https://") {
-			formData.Website = "https://" + formData.Website
+		if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
+			url = "https://" + url
 		}
 
 		if strings.TrimSpace(formData.Name) == "" {
@@ -124,7 +125,7 @@ func createComment(app *config.Application) http.Handler {
 			serverError(app, w, r, err)
 			return
 		}
-		id, err := app.Comments.Insert(formData.Name, formData.Website, formData.Comment, postId)
+		id, err := app.Comments.Insert(formData.Name, &url, formData.Comment, postId)
 		if err != nil {
 			serverError(app, w, r, err)
 			return
