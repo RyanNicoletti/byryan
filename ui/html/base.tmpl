@@ -9,14 +9,14 @@
     <link rel="stylesheet" href="/static/css/main.css" />
   </head>
   <body>
-    <div class="wrapper">
+    <div class="base-wrapper">
       <header>
         {{template "nav" .}}
       </header>
-      <main class="page-main">
-        <div class="main-tmpl">{{template "main" .}}</div>
+      <main class="base-main">
+        <div>{{template "main" .}}</div>
       </main>
-      <footer class="page-footer">
+      <footer class="base-footer">
         &copy; {{.CurrentYear}} Ryan Nicoletti
       </footer>
     </div>
