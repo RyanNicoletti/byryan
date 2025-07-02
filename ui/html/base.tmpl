@@ -1,0 +1,26 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{template "title" .}} - byRyan</title>
+
+    <link rel="stylesheet" href="/static/css/main.css" />
+  </head>
+  <body>
+    <div class="base-wrapper">
+      <header>
+        {{template "nav" .}}
+      </header>
+      <main class="base-main">
+        <div>{{template "main" .}}</div>
+      </main>
+      <footer class="base-footer">
+        &copy; {{.CurrentYear}} Ryan Nicoletti
+      </footer>
+    </div>
+    <script src="/static/js/main.js" type="text/javascript"></script>
+  </body>
+</html>
+{{ end }}

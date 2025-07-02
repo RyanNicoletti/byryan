@@ -1,0 +1,23 @@
+{{define "title"}}Home{{ end }}
+
+{{define "main"}}
+<div class="home-container">
+  <div class="intro-container">
+    <h1>Ryan Nicoletti</h1>
+    <p class="page-intro">Hello! Welcome to my personal website where I share my thoughts on software development, veterinary medicine, etc...</p>
+  </div>
+  <div class="posts-container">
+    <h2>Posts</h2>
+    <ul class="home-post-list">
+      {{ range.Posts }}
+      <li>
+        <article>
+          <a class="post-link" href="/post/{{.Slug}}">{{.Title}}</a>
+          <time datetime="{{.Created.Format "2006-01-02"}}">({{.Created.Format "02 January 2006"}})</time>
+        </article>
+      </li>
+      {{ end }}
+    </ul>
+  </div>
+</div>
+{{ end }}
