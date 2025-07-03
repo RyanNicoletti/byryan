@@ -10,6 +10,7 @@ import (
 
 	"byryan.net/config"
 	"byryan.net/internal/models"
+	"github.com/justinas/nosurf"
 )
 
 type templateData struct {
@@ -18,11 +19,13 @@ type templateData struct {
 	Posts       []models.Post
 	Comments    []models.Comment
 	Form        any
+	CSRFToken   string
 }
 
-func newTemplateData() templateData {
+func newTemplateData(r *http.Request) templateData {
 	return templateData{
 		CurrentYear: time.Now().Year(),
+		CSRFToken:   nosurf.Token(r),
 	}
 }
 

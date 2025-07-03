@@ -20,6 +20,7 @@
     </div>
 
     <form action="/comment/create" method="POST" id="add-comment-form" class="{{if not .Form.FieldErrors}}hidden{{end}}">
+        <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
         <input type="hidden" name="post_id" value="{{.Post.ID}}">
         <div>
             <label>Name</label>

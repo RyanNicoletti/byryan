@@ -28,7 +28,7 @@ func home(app *config.Application) http.Handler {
 			}
 			return
 		}
-		data := newTemplateData()
+		data := newTemplateData(r)
 		data.Posts = posts
 		render(w, r, app, http.StatusOK, "home.tmpl", data)
 	})
@@ -55,7 +55,7 @@ func postView(app *config.Application) http.Handler {
 			}
 			return
 		}
-		data := newTemplateData()
+		data := newTemplateData(r)
 		data.Post = p
 		data.Comments = c
 		data.Form = commentFormData{}
@@ -96,7 +96,7 @@ func createComment(app *config.Application) http.Handler {
 				return
 			}
 
-			data := newTemplateData()
+			data := newTemplateData(r)
 			data.Post = p
 			data.Comments = c
 			data.Form = formData
