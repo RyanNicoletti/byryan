@@ -4,12 +4,14 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
+	"io/fs"
 	"net/http"
 	"path/filepath"
 	"time"
 
 	"byryan.net/config"
 	"byryan.net/internal/models"
+	"byryan.net/ui"
 	"github.com/justinas/nosurf"
 )
 
@@ -32,24 +34,15 @@ func newTemplateData(r *http.Request) templateData {
 func newTemplateCache() (map[string]*template.Template, error) {
 	cache := map[string]*template.Template{}
 
-	pages, err := filepath.Glob("./ui/html/pages/*.tmpl")
+	pages, err := fs.Glob(ui.Files, "html/pages/*.tmpl")
 	if err != nil {
 		return nil, err
 	}
 
 	for _, page := range pages {
 		name := filepath.Base(page)
-		ts, err := template.ParseFiles("./ui/html/base.tmpl")
-		if err != nil {
-			return nil, err
-		}
-
-		ts, err = ts.ParseGlob("./ui/html/partials/*.tmpl")
-		if err != nil {
-			return nil, err
-		}
-
-		ts, err = ts.ParseFiles(page)
+		patterns := []string{"html/base.tmpl", "html/partials/*.tmpl", page}
+		ts, err := template.New(name).ParseFS(ui.Files, patterns...)
 		if err != nil {
 			return nil, err
 		}

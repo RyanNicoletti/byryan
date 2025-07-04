@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"byryan.net/config"
+	"byryan.net/ui"
 )
 
 type MiddlewareChain struct {
@@ -27,8 +28,8 @@ func middlewareChain(h http.Handler, middlewares ...func(http.Handler) http.Hand
 
 func routes(app *config.Application) http.Handler {
 	mux := http.NewServeMux()
-	fileServer := http.FileServer(http.Dir("./ui/static/"))
-	mux.Handle("GET /static/", http.StripPrefix("/static", fileServer))
+
+	mux.Handle("GET /static/", http.FileServerFS(ui.Files))
 
 	mux.Handle("GET /{$}", home(app))
 	mux.Handle("GET /post/{slug}", postView(app))
