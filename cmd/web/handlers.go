@@ -36,8 +36,12 @@ func home(app *config.Application) http.Handler {
 
 func postView(app *config.Application) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		s := r.PathValue("slug")
-		p, err := app.Posts.GetBySlug(s)
+		slug := r.PathValue("slug")
+		if slug == "" {
+			http.NotFound(w, r)
+			return
+		}
+		post, err := app.Posts.GetBySlug(slug)
 		if err != nil {
 			if errors.Is(err, models.ErrNoRecord) {
 				http.NotFound(w, r)
@@ -46,20 +50,10 @@ func postView(app *config.Application) http.Handler {
 			}
 			return
 		}
-		c, err := app.Comments.GetByPostId(p.ID)
-		if err != nil {
-			if errors.Is(err, models.ErrNoRecord) {
-				http.NotFound(w, r)
-			} else {
-				serverError(app, w, r, err)
-			}
-			return
-		}
+
 		data := newTemplateData(r)
-		data.Post = p
-		data.Comments = c
-		data.Form = commentFormData{}
-		render(w, r, app, http.StatusOK, "post.tmpl", data)
+		data.Post = post
+		render(w, r, app, http.StatusOK, "post.tmple", data)
 	})
 }
 
