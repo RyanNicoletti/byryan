@@ -66,7 +66,7 @@ body {
   font-weight: 600;
 }
 
-/* home.tmpl */
+/* home */
 .home-container {
   display: flex;
   flex-direction: column;
@@ -166,6 +166,14 @@ body {
   background-color: var(--accent-green);
 }
 
+#add-comment-form label.error {
+  color: #dc3545;
+  font-weight: 600;
+  font-size: 0.9em;
+  margin-bottom: 4px;
+}
+
+/* comment interaction buttons */
 #cancel-comment-btn {
   color: var(--text-secondary);
   cursor: pointer;
@@ -187,13 +195,6 @@ body {
 
 #add-comment-btn:active {
   color: var(--accent-green);
-}
-
-#add-comment-form label.error {
-  color: #dc3545;
-  font-weight: 600;
-  font-size: 0.9em;
-  margin-bottom: 4px;
 }
 
 /* comments */
