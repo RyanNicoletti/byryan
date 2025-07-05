@@ -51,9 +51,20 @@ func postView(app *config.Application) http.Handler {
 			return
 		}
 
+		comments, err := app.Comments.GetByPostId(post.ID)
+		if err != nil {
+			if errors.Is(err, models.ErrNoRecord) {
+				http.NotFound(w, r)
+			} else {
+				serverError(app, w, r, err)
+			}
+			return
+		}
+
 		data := newTemplateData(r)
 		data.Post = post
-		render(w, r, app, http.StatusOK, "post.tmple", data)
+		data.Comments = comments
+		render(w, r, app, http.StatusOK, "post.tmpl", data)
 	})
 }
 
