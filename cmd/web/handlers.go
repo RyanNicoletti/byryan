@@ -64,6 +64,7 @@ func postView(app *config.Application) http.Handler {
 		data := newTemplateData(r)
 		data.Post = post
 		data.Comments = comments
+		data.Form = commentFormData{}
 		render(w, r, app, http.StatusOK, "post.tmpl", data)
 	})
 }
