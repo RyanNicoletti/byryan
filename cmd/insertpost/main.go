@@ -116,7 +116,11 @@ func main() {
 	}
 
 	insertStmt := `INSERT into posts (title, slug, content, tags) 
-				   VALUES($1, $2, $3, $4)`
+				   VALUES($1, $2, $3, $4)
+				   ON CONFLICT (slug) DO UPDATE SET
+				   title = EXCLUDED.title,
+				   content = EXCLUDED.content,
+				   tags = EXCLUDED.tags`
 	_, err = db.Exec(insertStmt, title, slug, content, pq.Array(tags))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v", err)

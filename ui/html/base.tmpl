@@ -7,6 +7,14 @@
     <title>{{template "title" .}} - byRyan</title>
 
     <link rel="stylesheet" href="/static/css/main.css" />
+
+    {{if .Post}}
+    {{if .Post.Slug}}
+    <link rel="stylesheet" href="/static/css/posts/{{.Post.Slug}}.css" />
+    <!-- prettier-ignore -->
+    {{end}}
+    <!-- prettier-ignore -->
+    {{end}}
   </head>
   <body>
     <div class="base-wrapper">
