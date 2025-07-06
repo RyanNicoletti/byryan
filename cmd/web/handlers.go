@@ -126,7 +126,8 @@ func createComment(app *config.Application) http.Handler {
 
 func about(app *config.Application) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("about"))
+		data := newTemplateData(r)
+		render(w, r, app, http.StatusOK, "about.tmpl", data)
 	})
 }
 

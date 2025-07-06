@@ -72,11 +72,11 @@ body {
   flex-direction: column;
   row-gap: 2rem;
   max-width: 40%;
-  margin: 0 auto;
+  margin: 10px auto;
 }
 
 .intro-container {
-  max-width: 90%;
+  max-width: 80%;
 }
 
 .home-post-list {
@@ -231,4 +231,18 @@ body {
 
 .hidden {
   display: none;
+}
+
+/* About page */
+.about-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 40%;
+  margin: 10px auto;
+}
+.about-header {
+}
+
+.about-p1 {
+  max-width: 80%;
 }
