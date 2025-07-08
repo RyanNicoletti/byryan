@@ -2,3 +2,4 @@ tls/
 tls/
 bin/
 .envrc
+bin/
