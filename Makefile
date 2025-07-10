@@ -36,18 +36,6 @@ migrate/up: confirm
 	migrate -path ./migrations -database ${BYRYAN_DB_DSN} up
 
 # ==================================================================================== #
-# BUILD
-# ==================================================================================== #
-
-## build: build the cmd/web application
-.PHONY: build
-build:
-	@echo 'Building cmd/web'
-	go build -ldflags='-s' -o=./bin/web ./cmd/web
-	GOOS=linux GOARCH=amd64 go build -ldflags="-s" -o=./bin/linux_amd64/web ./cmd/web
-
-
-# ==================================================================================== #
 # QUALITY CONTROL
 # ==================================================================================== #
 
@@ -70,3 +58,40 @@ audit:
 	go tool staticcheck ./...
 	@echo 'Running tests'
 	go test -race -vet=off ./...
+
+# ==================================================================================== #
+# BUILD
+# ==================================================================================== #
+
+## build: build the cmd/web application
+.PHONY: build
+build:
+	@echo 'Building cmd/web'
+	go build -ldflags='-s' -o=./bin/web ./cmd/web
+	GOOS=linux GOARCH=amd64 go build -ldflags="-s" -o=./bin/linux_amd64/web ./cmd/web
+
+# ==================================================================================== #
+# PROD
+# ==================================================================================== #
+
+## production/connect: ssh into the pi
+.PHONY: production/connect
+production/connect:
+	ssh pi
+
+## production/deploy: deply the app to the pi
+.PHONY: production/deploy
+production/deploy:
+	@echo 'Deploying to production...'
+	rsync -P ./bin/linux_amd64/web byryan@${production_host_ip}:/opt/byryan/bin/
+	rsync -rP --delete ./migrations byryan@${production_host_ip}:/opt/byryan/bin/
+	rsync -P ./remote/production/byryanweb.service byryan@${production_host_ip}:~
+	rsync -P ./remote/production/Caddyfile byryan@${production_host_ip}:~
+	ssh -t -P ${production_host_port} byryan@${production_host_ip} '\
+		migrate -path ~/migrations -database $$PROD_DB_DSN up \
+		&& sudo mv ~/byryanweb.service /etc/systemd/system/ \
+		&& sudo systemctl enable byryanweb \
+		&& sudo systemctl restart byryanweb \
+		&& sudo mv ~/Caddyfile /etc/caddy/ \
+		&& sudo systemctl reload caddy \
+	'
