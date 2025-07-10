@@ -1,0 +1,20 @@
+[Unit]
+Description=ByRyan Web Application
+After=postgresql.service
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=600
+StartLimitBurst=5
+
+[Service]
+Type=exec
+User=byryan
+Group=byryan
+EnvironmentFile=/etc/environment
+WorkingDirectory=/opt/byryan
+ExecStart=/opt/byryan/web -dsn=${PROD_DB_DSN}
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

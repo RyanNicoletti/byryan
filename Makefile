@@ -83,12 +83,12 @@ production/connect:
 .PHONY: production/deploy
 production/deploy:
 	@echo 'Deploying to production...'
-	rsync -P ./bin/linux_amd64/web byryan@${production_host_ip}:/opt/byryan/bin/
-	rsync -rP --delete ./migrations byryan@${production_host_ip}:/opt/byryan/bin/
+	rsync -P ./bin/linux_amd64/web byryan@${production_host_ip}:/opt/byryan/
+	rsync -rP --delete ./migrations byryan@${production_host_ip}:/opt/byryan/
 	rsync -P ./remote/production/byryanweb.service byryan@${production_host_ip}:~
 	rsync -P ./remote/production/Caddyfile byryan@${production_host_ip}:~
-	ssh -t -P ${production_host_port} byryan@${production_host_ip} '\
-		migrate -path ~/migrations -database $$PROD_DB_DSN up \
+	ssh -t -p ${production_host_port} byryan@${production_host_ip} '\
+		migrate -path /opt/byryan/migrations -database $$PROD_DB_DSN up \
 		&& sudo mv ~/byryanweb.service /etc/systemd/system/ \
 		&& sudo systemctl enable byryanweb \
 		&& sudo systemctl restart byryanweb \
