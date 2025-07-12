@@ -71,7 +71,7 @@ body {
   display: flex;
   flex-direction: column;
   row-gap: 2rem;
-  max-width: 40%;
+  max-width: 40rem;
   margin: 10px auto;
 }
 
@@ -244,5 +244,5 @@ body {
 }
 
 .about-p1 {
-  max-width: 80%;
+  max-width: 650px;
 }

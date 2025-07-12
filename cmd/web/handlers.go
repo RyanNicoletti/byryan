@@ -8,6 +8,7 @@ import (
 	"byryan.net/config"
 	"byryan.net/internal/models"
 	"byryan.net/internal/validator"
+	"byryan.net/ui"
 )
 
 type commentFormData struct {
@@ -135,5 +136,17 @@ func links(app *config.Application) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		data := newTemplateData(r)
 		render(w, r, app, http.StatusOK, "links.tmpl", data)
+	})
+}
+
+func robots() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/plain")
+		data, err := ui.Files.ReadFile("static/robots.txt")
+		if err != nil {
+			http.NotFound(w, r)
+			return
+		}
+		w.Write(data)
 	})
 }
