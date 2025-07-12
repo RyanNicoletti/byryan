@@ -68,7 +68,7 @@ audit:
 build:
 	@echo 'Building cmd/web'
 	go build -ldflags='-s' -o=./bin/web ./cmd/web
-	GOOS=linux GOARCH=amd64 go build -ldflags="-s" -o=./bin/linux_amd64/web ./cmd/web
+	GOOS=linux GOARCH=arm64 go build -ldflags="-s" -o=./bin/linux_arm64/web ./cmd/web
 
 # ==================================================================================== #
 # PROD
@@ -83,11 +83,11 @@ production/connect:
 .PHONY: production/deploy
 production/deploy:
 	@echo 'Deploying to production...'
-	rsync -P ./bin/linux_amd64/web byryan@${production_host_ip}:/opt/byryan/
-	rsync -rP --delete ./migrations byryan@${production_host_ip}:/opt/byryan/
-	rsync -P ./remote/production/byryanweb.service byryan@${production_host_ip}:~
-	rsync -P ./remote/production/Caddyfile byryan@${production_host_ip}:~
-	ssh -t -p ${production_host_port} byryan@${production_host_ip} '\
+	rsync -P -e "ssh -p $(production_host_port)" ./bin/linux_arm64/web byryan@$(production_host_ip):/opt/byryan/
+	rsync -rP --delete -e "ssh -p $(production_host_port)" ./migrations byryan@$(production_host_ip):/opt/byryan/
+	rsync -P -e "ssh -p $(production_host_port)" ./remote/prod/byryanweb.service byryan@$(production_host_ip):~
+	rsync -P -e "ssh -p $(production_host_port)" ./remote/prod/Caddyfile byryan@$(production_host_ip):~
+	ssh -t -p $(production_host_port) byryan@$(production_host_ip) '\
 		migrate -path /opt/byryan/migrations -database $$PROD_DB_DSN up \
 		&& sudo mv ~/byryanweb.service /etc/systemd/system/ \
 		&& sudo systemctl enable byryanweb \
