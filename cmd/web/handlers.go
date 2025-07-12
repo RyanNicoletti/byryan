@@ -131,8 +131,9 @@ func about(app *config.Application) http.Handler {
 	})
 }
 
-func arcade(app *config.Application) http.Handler {
+func links(app *config.Application) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("arcade"))
+		data := newTemplateData(r)
+		render(w, r, app, http.StatusOK, "links.tmpl", data)
 	})
 }

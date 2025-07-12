@@ -35,7 +35,7 @@ func routes(app *config.Application) http.Handler {
 	mux.Handle("GET /post/{slug}", postView(app))
 	mux.Handle("POST /comment/create", createComment(app))
 	mux.Handle("GET /about", about(app))
-	mux.Handle("GET /arcade", arcade(app))
+	mux.Handle("GET /links", links(app))
 
 	standard := NewChain(func(h http.Handler) http.Handler { return recoverPanic(h, app) },
 		func(h http.Handler) http.Handler { return logRequest(h, app) },
