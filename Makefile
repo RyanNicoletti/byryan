@@ -74,11 +74,6 @@ build:
 # PROD
 # ==================================================================================== #
 
-## production/connect: ssh into the pi
-.PHONY: production/connect
-production/connect:
-	ssh pi
-
 ## production/deploy: deply the app to the pi
 .PHONY: production/deploy
 production/deploy:
@@ -88,7 +83,7 @@ production/deploy:
 	rsync -P -e "ssh -p $(production_host_port)" ./remote/prod/byryanweb.service byryan@$(production_host_ip):~
 	rsync -P -e "ssh -p $(production_host_port)" ./remote/prod/Caddyfile byryan@$(production_host_ip):~
 	ssh -t -p $(production_host_port) byryan@$(production_host_ip) '\
-		migrate -path /opt/byryan/migrations -database $$PROD_DB_DSN up \
+		source /etc/byryanweb/production.env && migrate -path /opt/byryan/migrations -database $$PROD_DB_DSN up \
 		&& sudo mv ~/byryanweb.service /etc/systemd/system/ \
 		&& sudo systemctl enable byryanweb \
 		&& sudo systemctl restart byryanweb \

@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	cfg, err := config.Load()
+	cfg, err := config.Init()
 	if err != nil {
 		slog.Error("Configuration error", "error", err)
 		os.Exit(1)

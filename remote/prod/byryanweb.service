@@ -10,9 +10,9 @@ StartLimitBurst=5
 Type=exec
 User=byryan
 Group=byryan
-EnvironmentFile=/etc/environment
+EnvironmentFile=/etc/byryanweb/production.env
 WorkingDirectory=/opt/byryan
-ExecStart=/opt/byryan/web -dsn=${PROD_DB_DSN}
+ExecStart=/opt/byryan/web -env=production
 Restart=on-failure
 RestartSec=5
 

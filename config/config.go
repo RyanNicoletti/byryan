@@ -6,14 +6,16 @@ import (
 	"fmt"
 	"html/template"
 	"log/slog"
+	"os"
 
 	"byryan.net/internal/models"
 	_ "github.com/lib/pq"
 )
 
 type Config struct {
-	Addr string
-	DSN  string
+	Addr        string
+	DSN         string
+	Environment string
 }
 
 type Application struct {
@@ -24,26 +26,34 @@ type Application struct {
 	Comments      *models.CommentModel
 }
 
-func Load() (*Config, error) {
+func Init() (*Config, error) {
 	cfg := &Config{}
 
 	flag.StringVar(&cfg.Addr, "addr", ":4000", "HTTP server address")
-	flag.StringVar(&cfg.DSN, "dsn", "", "PostgreSQL data source name")
-
+	flag.StringVar(&cfg.Environment, "env", "development", "Environment (development|production)")
 	flag.Parse()
 
-	if err := cfg.validate(); err != nil {
+	err := cfg.loadDSN()
+	if err != nil {
 		return nil, err
 	}
-
 	return cfg, nil
 }
 
-func (c *Config) validate() error {
-	if c.DSN == "" {
-		return fmt.Errorf("database DSN is required (use -dsn flag)")
+func (c *Config) loadDSN() error {
+	if c.Environment == "production" {
+		dsn := os.Getenv("PROD_DB_DSN")
+		if dsn != "" {
+			c.DSN = dsn
+			return nil
+		}
 	}
-	return nil
+	dsn := os.Getenv("DEV_DB_DSN")
+	if dsn != "" {
+		c.DSN = dsn
+		return nil
+	}
+	return fmt.Errorf("database DSN not found")
 }
 
 func NewApplication(logger *slog.Logger, db *sql.DB, templateCache map[string]*template.Template) *Application {
