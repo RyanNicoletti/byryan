@@ -1,0 +1,19 @@
+.pi-figure {
+  float: right;
+  padding: 0.5rem;
+}
+
+.pi-img {
+  width: 7rem;
+  height: 7rem;
+  border-radius: 0.25rem;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.pi-caption {
+  font-size: 12px;
+}
+
+h3 {
+  margin-top: var(--section-gap);
+}

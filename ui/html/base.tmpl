@@ -1,3 +1,7 @@
+{{define "styles"}}
+<!-- Default empty styles block -->
+{{ end }}
+
 {{define "base"}}
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +19,9 @@
     {{end}}
     <!-- prettier-ignore -->
     {{end}}
+
+    <link rel="stylesheet" href="/static/css/pages/{{template "title" .
+    }}.css" />
 
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" />
   </head>
