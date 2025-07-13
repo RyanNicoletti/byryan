@@ -22,6 +22,7 @@ type Application struct {
 	Logger        *slog.Logger
 	DB            *sql.DB
 	TemplateCache map[string]*template.Template
+	Environment   string
 	Posts         *models.PostModel
 	Comments      *models.CommentModel
 }
@@ -56,11 +57,12 @@ func (c *Config) loadDSN() error {
 	return fmt.Errorf("database DSN not found")
 }
 
-func NewApplication(logger *slog.Logger, db *sql.DB, templateCache map[string]*template.Template) *Application {
+func NewApplication(logger *slog.Logger, db *sql.DB, templateCache map[string]*template.Template, env string) *Application {
 	return &Application{
 		Logger:        logger,
 		DB:            db,
 		TemplateCache: templateCache,
+		Environment:   env,
 		Posts:         &models.PostModel{DB: db},
 		Comments:      &models.CommentModel{DB: db},
 	}

@@ -29,7 +29,11 @@ func middlewareChain(h http.Handler, middlewares ...func(http.Handler) http.Hand
 func routes(app *config.Application) http.Handler {
 	mux := http.NewServeMux()
 
-	mux.Handle("GET /static/", http.FileServerFS(ui.Files))
+	if app.Environment == "production" {
+		mux.Handle("GET /static/", http.FileServerFS(ui.Files))
+	} else {
+		mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./ui/static/"))))
+	}
 
 	mux.Handle("GET /{$}", home(app))
 	mux.Handle("GET /post/{slug}", postView(app))

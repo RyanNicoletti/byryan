@@ -34,7 +34,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	app := config.NewApplication(logger, db, templateCache)
+	app := config.NewApplication(logger, db, templateCache, cfg.Environment)
 
 	srv := &http.Server{
 		Addr:         cfg.Addr,

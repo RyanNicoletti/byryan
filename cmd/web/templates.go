@@ -52,15 +52,27 @@ func newTemplateCache() (map[string]*template.Template, error) {
 }
 
 func render(w http.ResponseWriter, r *http.Request, app *config.Application, status int, page string, data templateData) {
-	ts, ok := app.TemplateCache[page]
-	if !ok {
-		err := fmt.Errorf("the template %s does not exist", page)
-		serverError(app, w, r, err)
-		return
+	var ts *template.Template
+	var err error
+	if app.Environment == "production" {
+		var ok bool
+		ts, ok = app.TemplateCache[page]
+		if !ok {
+			err := fmt.Errorf("the template %s does not exist", page)
+			serverError(app, w, r, err)
+			return
+		}
+	} else {
+		name := filepath.Base(page)
+		ts, err = template.New(name).ParseFS(ui.Files, "html/base.tmpl", "html/partials/*.tmpl", "html/pages/"+page)
+		if err != nil {
+			serverError(app, w, r, err)
+			return
+		}
 	}
 
 	buf := new(bytes.Buffer)
-	err := ts.ExecuteTemplate(buf, "base", data)
+	err = ts.ExecuteTemplate(buf, "base", data)
 	if err != nil {
 		serverError(app, w, r, err)
 		return
