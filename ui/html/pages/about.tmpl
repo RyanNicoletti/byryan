@@ -1,21 +1,48 @@
 {{define "title"}}About{{ end }}
 
 {{define "main"}}
-<div class="about-container">
+<div class="content-container about-container">
   <h1 class="about-header">About Me</h1>
   <p class="about-p1">
     I'm a veterinarian and software developer currently living in Northern
     Virginia. I graduated from veterinary school in 2017 and practiced as a
-    small animal vet for approximately 5-6 years before making a career change
-    into software development. Currently, I work full time as a software
-    developer and occasionally work at as a veterinarian on weekends.
+    small animal vet for 5-6 years before making a career change into software
+    development. Currently, I work full time as a software developer and
+    occasionally work at as a veterinarian on weekends.
   </p>
   <br />
   <h3>About This Site</h3>
   <p class="about-p2">
+    <figure class="pi-figure">
+      <img
+        class="pi-img"
+        src="/static/images/raspberrypi.jpeg"
+        alt="raspberry pi on desk"
+        width="150px"
+        height="150px" />
+      <figcaption class="pi-caption">
+        The raspberry pi hosting this site
+      </figcaption>
+    </figure>
     This website is written in Golang using mostly the standard library and a
-    few additional dependencies. It's 'self-hosted' on a little Raspberry Pi 4
-    that sits next to my laptop.
+    few small dependencies. It's self-hosted on a little
+    <a href="https://www.raspberrypi.com/">Raspberry Pi</a>
+    that sits next to my laptop. It mainly consists of a simple Go http server,
+    html templates from Go's built in template library, and a little bit of css
+    and js. Blog posts and comments are stored in a postgres database, which is
+    unnecessary, but was fun to build. The source code is viewable on my github
+    at
+    <a href="https://github.com/RyanNicoletti/byryan">
+      github.com/RyanNicoletti/byryan
+    </a>
+    .
+  </p>
+  <h3>Indie Web</h3>
+  <p class="about-p3">
+    The
+    <a href="https://indieweb.org/">indie web</a>
+    is the idea of a "de-corporatized" world wide web, where people own the
+    content they post online, including their own personal websites.
   </p>
 </div>
 {{ end }}
