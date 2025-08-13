@@ -1,3 +1,5 @@
-h1 {
-  background-color: aqua;
+.content-container.post-section {
+  background-color: bisque;
+  max-width: 700px;
+  padding: 20px 50px;
 }

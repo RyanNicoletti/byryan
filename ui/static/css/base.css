@@ -20,7 +20,7 @@
 }
 
 html {
-  font-size: 20px;
+  font-size: 16px;
 }
 
 html,
@@ -42,10 +42,12 @@ body {
 }
 
 .base-main {
+  margin-top: 5rem;
   flex-grow: 1;
 }
 
 .base-footer {
+  font-size: 12px;
   flex-grow: 0;
   flex-shrink: 0;
   margin-left: auto;

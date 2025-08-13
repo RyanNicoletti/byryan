@@ -11,7 +11,8 @@
   flex-shrink: 0;
 }
 .pi-caption {
-  font-size: 12px;
+  font-size: 10px;
+  max-width: 128px;
 }
 
 h3 {
