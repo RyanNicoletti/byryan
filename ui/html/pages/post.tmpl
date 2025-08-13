@@ -1,11 +1,7 @@
-{{define "title"}}post{{ end }}
+{{define "title"}}{{.Post.Title}}{{ end }}
 {{define "main"}}
 <section class="content-container post-section">
-  <article class="post-container">
-    <div class="post-content">
       {{.Post.Content}}
-    </div>
-  </article>
 </section>
 
 <section class="content-container comments-section">

@@ -1,5 +1,2 @@
-tls/
-tls/
 bin/
-.envrc
-bin/
+.env
