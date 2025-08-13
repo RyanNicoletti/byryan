@@ -9,6 +9,7 @@ import (
 	"os"
 
 	"byryan.net/internal/models"
+	"byryan.net/posts"
 	_ "github.com/lib/pq"
 )
 
@@ -63,7 +64,7 @@ func NewApplication(logger *slog.Logger, db *sql.DB, templateCache map[string]*t
 		DB:            db,
 		TemplateCache: templateCache,
 		Environment:   env,
-		Posts:         &models.PostModel{DB: db},
+		Posts:         &models.PostModel{PostsFS: posts.Files},
 		Comments:      &models.CommentModel{DB: db},
 	}
 }

@@ -52,14 +52,10 @@ func postView(app *config.Application) http.Handler {
 			return
 		}
 
-		comments, err := app.Comments.GetByPostId(post.ID)
+		comments, err := app.Comments.GetByPostSlug(post.Slug)
 		if err != nil {
-			if errors.Is(err, models.ErrNoRecord) {
-				http.NotFound(w, r)
-			} else {
-				serverError(app, w, r, err)
-			}
-			return
+			app.Logger.Warn("Error loading comments", "post", post.Slug, "error", err)
+			comments = []models.Comment{}
 		}
 
 		data := newTemplateData(r)
@@ -88,19 +84,19 @@ func createComment(app *config.Application) http.Handler {
 		formData.ValidateLength(formData.Name, 100, "name", "This field cannot be more than 100 characters long")
 		url := formData.ValidateUrl(formData.Website, "website")
 
-		postId := r.PostForm.Get("post_id")
+		postSlug := r.PostForm.Get("post_slug")
 
 		if !formData.IsValid() {
-			p, err := app.Posts.GetById(postId)
+			p, err := app.Posts.GetBySlug(postSlug)
 			if err != nil {
 				serverError(app, w, r, err)
 				return
 			}
 
-			c, err := app.Comments.GetByPostId(p.ID)
+			c, err := app.Comments.GetByPostSlug(p.Slug)
 			if err != nil {
-				serverError(app, w, r, err)
-				return
+				app.Logger.Warn("Error loading comments for form", "post", p.Slug, "error", err)
+				c = []models.Comment{}
 			}
 
 			data := newTemplateData(r)
@@ -111,12 +107,12 @@ func createComment(app *config.Application) http.Handler {
 			return
 		}
 
-		p, err := app.Posts.GetById(postId)
+		p, err := app.Posts.GetBySlug(postSlug)
 		if err != nil {
 			serverError(app, w, r, err)
 			return
 		}
-		id, err := app.Comments.Insert(formData.Name, &url, formData.Comment, postId)
+		id, err := app.Comments.Insert(formData.Name, &url, formData.Comment, postSlug)
 		if err != nil {
 			serverError(app, w, r, err)
 			return

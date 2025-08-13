@@ -6,21 +6,21 @@ import (
 )
 
 type Comment struct {
-	ID      string
-	Name    string
-	Website *string
-	Content string
-	PostID  string
-	Created time.Time
+	ID       string
+	Name     string
+	Website  *string
+	Content  string
+	PostSlug string
+	Created  time.Time
 }
 
 type CommentModel struct {
 	DB *sql.DB
 }
 
-func (cm *CommentModel) GetByPostId(postID string) ([]Comment, error) {
-	stmt := `SELECT id, name, website, content, post_id, created FROM comments WHERE post_id=$1`
-	rows, err := cm.DB.Query(stmt, postID)
+func (c *CommentModel) GetByPostSlug(postSlug string) ([]Comment, error) {
+	stmt := `SELECT id, name, website, content, post_slug, created FROM comments WHERE post_slug=$1 ORDER BY created ASC`
+	rows, err := c.DB.Query(stmt, postSlug)
 	if err != nil {
 		return nil, err
 	}
@@ -28,7 +28,7 @@ func (cm *CommentModel) GetByPostId(postID string) ([]Comment, error) {
 	var comments []Comment
 	for rows.Next() {
 		var c Comment
-		err = rows.Scan(&c.ID, &c.Name, &c.Website, &c.Content, &c.PostID, &c.Created)
+		err = rows.Scan(&c.ID, &c.Name, &c.Website, &c.Content, &c.PostSlug, &c.Created)
 		if err != nil {
 			return nil, err
 		}
@@ -40,10 +40,10 @@ func (cm *CommentModel) GetByPostId(postID string) ([]Comment, error) {
 	return comments, nil
 }
 
-func (cm *CommentModel) Insert(name string, website *string, content string, postID string) (string, error) {
-	stmt := `INSERT INTO comments (name, website, content, post_id, created) VALUES ($1, $2, $3, $4, NOW()) RETURNING id`
+func (c *CommentModel) Insert(name string, website *string, content string, postSlug string) (string, error) {
+	stmt := `INSERT INTO comments (name, website, content, post_slug, created) VALUES ($1, $2, $3, $4, NOW()) RETURNING id`
 	var id string
-	err := cm.DB.QueryRow(stmt, name, website, content, postID).Scan(&id)
+	err := c.DB.QueryRow(stmt, name, website, content, postSlug).Scan(&id)
 	if err != nil {
 		return "", err
 	}

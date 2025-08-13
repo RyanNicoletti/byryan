@@ -1,12 +1,14 @@
 package models
 
 import (
-	"database/sql"
-	"errors"
+	"embed"
+	"encoding/json"
+	"fmt"
 	"html/template"
+	"io/fs"
+	"path/filepath"
+	"sort"
 	"time"
-
-	"github.com/lib/pq"
 )
 
 type Post struct {
@@ -19,74 +21,91 @@ type Post struct {
 	Updated time.Time
 }
 
-type PostModel struct {
-	DB *sql.DB
+type PostMeta struct {
+	Title   string    `json:"title"`
+	Slug    string    `json:"slug"`
+	Tags    []string  `json:"tags"`
+	Created time.Time `json:"created"`
+	Updated time.Time `json:"updated"`
+	Draft   bool      `json:"draft,omitempty"`
 }
 
-func (p *PostModel) GetById(id string) (Post, error) {
-	stmt := `SELECT id, title, slug, content, tags, created, updated FROM posts WHERE id=$1`
-	row := p.DB.QueryRow(stmt, id)
-	var post Post
-	err := row.Scan(&post.ID, &post.Title, &post.Slug, &post.Content, pq.Array(&post.Tags), &post.Created, &post.Updated)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return Post{}, ErrNoRecord
-		}
-		return Post{}, err
-	}
-	return post, nil
+type PostModel struct {
+	PostsFS embed.FS
 }
 
 func (p *PostModel) GetBySlug(slug string) (Post, error) {
-	stmt := `SELECT id, title, slug, content, tags, created, updated 
-             FROM posts WHERE slug = $1`
-	row := p.DB.QueryRow(stmt, slug)
-	var post Post
-	err := row.Scan(&post.ID, &post.Title, &post.Slug, &post.Content, pq.Array(&post.Tags),
-		&post.Created, &post.Updated)
+	entries, err := fs.ReadDir(p.PostsFS, ".")
 	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return Post{}, ErrNoRecord
-		}
 		return Post{}, err
 	}
-	return post, nil
+
+	for _, entry := range entries {
+		if entry.IsDir() && entry.Name() == slug {
+			return p.loadPost(slug)
+		}
+	}
+
+	return Post{}, ErrNoRecord
 }
 
 func (p *PostModel) GetAll() ([]Post, error) {
-	stmt := `SELECT id, title, slug, content, tags, created, updated 
-             FROM posts 
-             ORDER BY created DESC`
-	rows, err := p.DB.Query(stmt)
+	entries, err := fs.ReadDir(p.PostsFS, ".")
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
 
 	var posts []Post
-	for rows.Next() {
-		var post Post
-		err = rows.Scan(&post.ID, &post.Title, &post.Slug, &post.Content, pq.Array(&post.Tags),
-			&post.Created, &post.Updated)
-		if err != nil {
-			return nil, err
+	for _, entry := range entries {
+		if entry.IsDir() {
+			post, err := p.loadPost(entry.Name())
+			if err != nil {
+				continue
+			}
+			posts = append(posts, post)
 		}
-		posts = append(posts, post)
 	}
-	if err = rows.Err(); err != nil {
-		return nil, err
-	}
+
+	sort.Slice(posts, func(i, j int) bool {
+		return posts[i].Created.After(posts[j].Created)
+	})
+
 	return posts, nil
 }
 
-func (p *PostModel) Insert(title, slug, content string, tags []string) (string, error) {
-	stmt := `INSERT INTO posts (title, slug, content, tags) 
-			 VALUES ($1, $2, $3, $4) 
-			 RETURNING id`
-	var id string
-	err := p.DB.QueryRow(stmt, title, slug, content, pq.Array(tags)).Scan(&id)
+func (p *PostModel) GetById(id string) (Post, error) {
+	return p.GetBySlug(id)
+}
+
+func (p *PostModel) loadPost(slug string) (Post, error) {
+	metaPath := filepath.Join(slug, "meta.json")
+	metaBytes, err := fs.ReadFile(p.PostsFS, metaPath)
 	if err != nil {
-		return "", err
+		return Post{}, fmt.Errorf("error reading metadata for %s: %w", slug, err)
 	}
-	return id, nil
+
+	var meta PostMeta
+	if err := json.Unmarshal(metaBytes, &meta); err != nil {
+		return Post{}, fmt.Errorf("error parsing metadata for %s: %w", slug, err)
+	}
+
+	if meta.Draft {
+		return Post{}, ErrNoRecord
+	}
+
+	contentPath := filepath.Join(slug, "content.html")
+	contentBytes, err := fs.ReadFile(p.PostsFS, contentPath)
+	if err != nil {
+		return Post{}, fmt.Errorf("error reading content for %s: %w", slug, err)
+	}
+
+	return Post{
+		ID:      meta.Slug,
+		Title:   meta.Title,
+		Slug:    meta.Slug,
+		Content: template.HTML(contentBytes),
+		Tags:    meta.Tags,
+		Created: meta.Created,
+		Updated: meta.Updated,
+	}, nil
 }
