@@ -21,7 +21,7 @@ confirm:
 # run: run the cmd/web application
 .PHONY: run
 run:
-	go run ./cmd/web -dsn=${BYRYAN_DB_DSN}
+	go run ./cmd/web -env=development -addr=:4000
 
 ## migrations/new name=$1: create a new database migration
 .PHONY: migrations/new
@@ -33,13 +33,13 @@ migrations/new:
 .PHONY: migrate/up
 migrate/up: confirm
 	@echo 'Running up migrations...'
-	migrate -path ./migrations -database ${BYRYAN_DB_DSN} up
+	migrate -path ./migrations -database ${DEV_DB_DSN} up
 
 ## migrate/down: migrate down
 .PHONY: migrate/down
 migrate/down: confirm
 	@echo "Running down migrations..."
-	migrate -path ./migrations -database ${BYRYAN_DB_DSN} down
+	migrate -path ./migrations -database ${DEV_DB_DSN} down
 
 # ==================================================================================== #
 # QUALITY CONTROL

@@ -31,7 +31,7 @@ type Application struct {
 func Init() (*Config, error) {
 	cfg := &Config{}
 
-	flag.StringVar(&cfg.Addr, "addr", ":4000", "HTTP server address")
+	flag.StringVar(&cfg.Addr, "addr", ":4000", "HTTP server port")
 	flag.StringVar(&cfg.Environment, "env", "development", "Environment (development|production)")
 	flag.Parse()
 
