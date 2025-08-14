@@ -22,6 +22,7 @@ type templateData struct {
 	Comments    []models.Comment
 	Form        any
 	CSRFToken   string
+	PageName    string
 }
 
 func newTemplateData(r *http.Request) templateData {
@@ -52,6 +53,8 @@ func newTemplateCache() (map[string]*template.Template, error) {
 }
 
 func render(w http.ResponseWriter, r *http.Request, app *config.Application, status int, page string, data templateData) {
+	name := filepath.Base(page)
+	data.PageName = name
 	var ts *template.Template
 	var err error
 	if app.Environment == "production" {
@@ -63,7 +66,6 @@ func render(w http.ResponseWriter, r *http.Request, app *config.Application, sta
 			return
 		}
 	} else {
-		name := filepath.Base(page)
 		ts, err = template.New(name).ParseFS(ui.Files, "html/base.tmpl", "html/partials/*.tmpl", "html/pages/"+page)
 		if err != nil {
 			serverError(app, w, r, err)

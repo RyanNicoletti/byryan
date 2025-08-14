@@ -1,38 +1,38 @@
-{{define "title"}}{{.Post.Title}}{{ end }}
-{{define "main"}}
-<section class="content-container post-section">
-      {{.Post.Content}}
+{{define "title"}}{{.Post.Slug}}{{ end }}
+{{define "page-content"}}
+<section>
+  {{.Post.Content}}
 </section>
 
-<section class="content-container comments-section">
-  <div class="comments-header">
+<section>
+  <div>
     <h4>Comments</h4>
     <p id="add-comment-btn">add a comment</p>
   </div>
 
   <form action="/comment/create" method="POST" id="add-comment-form" class="{{if not .Form.FieldErrors}}hidden{{end}}">
     <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
-    <input type="hidden" name="post_slug" value="{{.Post.Slug}}">    
+    <input type="hidden" name="post_slug" value="{{.Post.Slug}}">
     <div>
       <label>Name</label>
       {{with .Form.FieldErrors.name}}
-        <label class="error">{{.}}</label>
+      <label>{{.}}</label>
       {{end}}
       <input type="text" name="name" value="{{.Form.Name}}">
     </div>
     <div>
       <label>Website/Social Media (optional)</label>
       {{with .Form.FieldErrors.website}}
-        <label class="error">{{.}}</label>
+      <label>{{.}}</label>
       {{end}}
       <input type="url" name="website" value="{{.Form.Website}}">
     </div>
     <div>
       <label>Comment</label>
       {{with .Form.FieldErrors.comment}}
-        <label class="error">{{.}}</label>
+      <label>{{.}}</label>
       {{end}}
-      <textarea name="comment" value="{{.Form.Comment}}"></textarea>
+      <textarea name="comment">{{.Form.Comment}}</textarea>
     </div>
     <div>
       <input type='submit' value='submit'>
@@ -41,21 +41,21 @@
       <p id="cancel-comment-btn">cancel</p>
     </div>
   </form>
-  
-  <div class="comments-container">
+
+  <div>
     {{if .Comments}}
     {{range .Comments}}
-    <div class="comment" id="comment-{{.ID}}">
-      <div class="ts">
-        <time class="comment-timestamp" datetime="{{.Created.Format "2006-01-02T15:04:05Z07:00"}}">
-        {{.Created.Format "01/02/2006 3:04 PM"}}
+    <div id="comment-{{.ID}}">
+      <div>
+        <div>
+          <h4>{{.Name}}</h4>
+          {{if .Website}}
+          <a href="{{.Website}}" target="_blank" rel="noopener noreferrer">{{.Website}}</a>
+          {{end}}
+        </div>
+        <time datetime="{{.Created.Format " 2006-01-02T15:04:05Z07:00"}}">
+          {{.Created.Format "01/02/2006 3:04 PM"}}
         </time>
-      </div>
-      <div class="name-website">
-        <h4>{{.Name}}</h4>
-        {{if .Website}}
-        <a href="{{.Website}}" target="_blank" rel="noopener noreferrer">{{.Website}}</a>
-        {{end}}
       </div>
       <p>{{.Content}}</p>
     </div>

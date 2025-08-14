@@ -1,23 +1,22 @@
 {{define "title"}}home{{ end }}
 
-{{define "main"}}
-<div class="content-container home-container">
-  <div class="intro-container">
-    <h1>Ryan Nicoletti</h1>
-    <p class="page-intro">Hello! I'm Ryan. Welcome to my website. I use it to write about things I find intersting, things I'm working on, and share ideas from around the web.</p>
-  </div>
-  <div class="posts-container">
-    <h2>Posts</h2>
-    <ul class="home-post-list">
-      {{ range.Posts }}
-      <li>
-        <article>
-          <a class="post-link" href="/post/{{.Slug}}">{{.Title}}</a>
-          <time datetime="{{.Created.Format "2006-01-02"}}">({{.Created.Format "02 January 2006"}})</time>
-        </article>
-      </li>
-      {{ end }}
-    </ul>
-  </div>
+{{define "page-content"}}
+<div>
+  <h1>Ryan Nicoletti</h1>
+  <p>Hello! I'm Ryan. Welcome to my website. I use it to write about things I find interesting, things I'm working on,
+    and share ideas from around the web.</p>
+</div>
+<div>
+  <h2>Posts</h2>
+  <ul>
+    {{ range.Posts }}
+    <li>
+      <article>
+        <a href="/post/{{.Slug}}">{{.Title}}</a>
+        <time datetime="{{.Created.Format " 2006-01-02"}}">({{.Created.Format "02 January 2006"}})</time>
+      </article>
+    </li>
+    {{ end }}
+  </ul>
 </div>
 {{ end }}
