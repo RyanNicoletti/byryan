@@ -7,6 +7,7 @@ import (
 	"io/fs"
 	"net/http"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"byryan.net/config"
@@ -53,7 +54,7 @@ func newTemplateCache() (map[string]*template.Template, error) {
 }
 
 func render(w http.ResponseWriter, r *http.Request, app *config.Application, status int, page string, data templateData) {
-	name := filepath.Base(page)
+	name := strings.TrimSuffix(filepath.Base(page), filepath.Ext(page))
 	data.PageName = name
 	var ts *template.Template
 	var err error

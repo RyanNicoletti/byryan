@@ -1,53 +1,43 @@
 {{define "title"}}about{{ end }}
 {{define "page-content"}}
-<div>
-  <h1>About Me</h1>
-  <p>
-    I'm a veterinarian and software developer currently living in Northern
-    Virginia. I graduated from veterinary school in 2017 and practiced as a
-    small animal vet for 5-6 years before changing careers. Currently, I work
-    full time as a software developer and occasionally work at as a veterinarian
-    on weekends.
-  </p>
-  <h3>About This Site</h3>
-  <p>
-  <figure class="pi-figure">
-    <img class="pi-img" src="/static/images/raspberrypi.jpeg" alt="raspberry pi on desk" width="150px" height="150px" />
-    <figcaption class="pi-caption">
-      The raspberry pi hosting this site
-    </figcaption>
-  </figure>
-  This website is written in Golang using mostly the standard library and a
-  few small dependencies. It's self-hosted on a little
+<h2>About Me</h2>
+<p>
+  I'm a veterinarian and software developer currently living in Northern
+  Virginia. I graduated from veterinary school in 2017 and practiced as a small
+  animal vet for 5-6 years before changing careers. Currently, I work full time
+  as a software developer and occasionally work at as a veterinarian on
+  weekends.
+</p>
+<h3>About This Site</h3>
+<p>
+  This website is written in Golang using mostly the standard library and a few
+  small dependencies. It's self-hosted on a little
   <a href="https://www.raspberrypi.com/">Raspberry Pi</a>
   that sits next to my laptop. It mainly consists of a simple Go http server,
   html templates from Go's built in template library, and a little bit of css
   and js. Blog posts and comments are stored in a postgres database, which is
-  unnecessary, but was fun to build. The source code is viewable on my github
-  at
+  unnecessary, but was fun to build. The source code is viewable on my github at
   <a href="https://github.com/RyanNicoletti/byryan">
     github.com/RyanNicoletti/byryan
   </a>
   .
-  </p>
-  <h3>Indie Web</h3>
-  <p>
-    The
-    <a href="https://indieweb.org/">indie web</a>
-    is a community of websites created, owned, and maintained by individuals.
-    It's a somewhat niche alternative to the modern corporate web. One of the
-    main principles of the indie web community, among other things, is having
-    ownership over your own domain, website, and data.
-  </p>
-  <br />
-  <p>
-    Personal websites, blogs, etc... are the "soul" of the internet. They're a
-    strict departure from the corporate owned, centralized aspects of the web
-    filled with AI, bots, and algorithms meant to harvest user data and
-    attention span. Handcrafted websites where people can share their journey,
-    thoughts, and interests offer a return to a more meaningful experience for
-    users browsing the web. This website is my small contribution to the so
-    called indie web.
-  </p>
-</div>
+</p>
+<h3>Indie Web</h3>
+<p>
+  The
+  <a href="https://indieweb.org/">indie web</a>
+  is a community of websites created, owned, and maintained by individuals. It's
+  a somewhat niche alternative to the modern corporate web. One of the main
+  principles of the indie web community, among other things, is having ownership
+  over your own domain, website, and data.
+</p>
+<br />
+<p>
+  Personal websites, blogs, etc... are the "soul" of the internet. They're a
+  strict departure from the corporate owned, centralized aspects of the web
+  filled with AI, bots, and algorithms meant to harvest user data and attention
+  span. Handcrafted websites where people can share their journey, thoughts, and
+  interests offer a return to a more meaningful experience for users browsing
+  the web. This website is my small contribution to the so called indie web.
+</p>
 {{ end }}
