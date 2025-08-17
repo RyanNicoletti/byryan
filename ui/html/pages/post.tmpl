@@ -11,7 +11,6 @@
   </div>
 
   <form action="/comment/create" method="POST" id="add-comment-form" class="{{if not .Form.FieldErrors}}hidden{{end}}">
-    <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
     <input type="hidden" name="post_slug" value="{{.Post.Slug}}">
     <div>
       <label>Name</label>

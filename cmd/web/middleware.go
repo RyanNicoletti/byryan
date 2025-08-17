@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"byryan.net/config"
-	"github.com/justinas/nosurf"
 )
 
 func commonHeaders(next http.Handler) http.Handler {
@@ -47,8 +46,7 @@ func recoverPanic(next http.Handler, app *config.Application) http.Handler {
 	})
 }
 
-func noSurf(next http.Handler) http.Handler {
-	csrfHandler := nosurf.New(next)
-	csrfHandler.SetBaseCookie(http.Cookie{HttpOnly: true, Path: "/", Secure: true})
-	return csrfHandler
+func preventCSRF(next http.Handler) http.Handler {
+	cop := http.NewCrossOriginProtection()
+	return cop.Handler(next)
 }

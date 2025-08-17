@@ -45,7 +45,7 @@ func routes(app *config.Application) http.Handler {
 	standard := NewChain(func(h http.Handler) http.Handler { return recoverPanic(h, app) },
 		func(h http.Handler) http.Handler { return logRequest(h, app) },
 		func(h http.Handler) http.Handler { return commonHeaders(h) },
-		func(h http.Handler) http.Handler { return noSurf(h) })
+		func(h http.Handler) http.Handler { return preventCSRF(h) })
 
 	return standard.Then(mux)
 }
