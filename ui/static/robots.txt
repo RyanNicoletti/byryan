@@ -1,9 +1,6 @@
 User-agent: Googlebot
 Allow: /
 
-User-agent: Bingbot
-Allow: /
-
 User-agent: DuckDuckBot
 Allow: /
 
@@ -13,6 +10,9 @@ Allow: /
 
 # dissallow a bunch of ai training bots
 User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: Applebot
 Disallow: /
 
 User-agent: GPTBot
