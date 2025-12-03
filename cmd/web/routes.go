@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io/fs"
 	"net/http"
 
 	"byryan.net/config"
@@ -30,7 +31,11 @@ func routes(app *config.Application) http.Handler {
 	mux := http.NewServeMux()
 
 	if app.Environment == "production" {
-		mux.Handle("GET /static/", http.FileServerFS(ui.Files))
+		staticFS, err := fs.Sub(ui.Files, "static")
+		if err != nil {
+			panic(err)
+		}
+		mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServerFS(staticFS)))
 	} else {
 		mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./ui/static/"))))
 	}
