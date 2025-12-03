@@ -17,6 +17,7 @@ import (
 
 type templateData struct {
 	CurrentYear int
+	CurrentTime int64
 	Post        models.Post
 	Posts       []models.Post
 	Comments    []models.Comment
@@ -27,6 +28,7 @@ type templateData struct {
 func newTemplateData(r *http.Request) templateData {
 	return templateData{
 		CurrentYear: time.Now().Year(),
+		CurrentTime: time.Now().Unix(),
 	}
 }
 

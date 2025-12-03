@@ -16,6 +16,8 @@
     <div style="position: absolute; left: -5000px;" aria-hidden="true">
         <input type="text" name="website_url" tabindex="-1" autocomplete="off">
     </div>
+    <!-- Another hidden field for stupid bots, to calculate time taken to complete form-->
+    <input type="hidden" name="form_time" value="{{.CurrentTime}}">
     <div>
       <label>Name</label>
       {{with .Form.FieldErrors.name}}

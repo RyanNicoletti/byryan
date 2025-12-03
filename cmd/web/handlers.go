@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
+	"time"
 
 	"byryan.net/config"
 	"byryan.net/internal/models"
@@ -73,8 +75,18 @@ func createComment(app *config.Application) http.Handler {
 			clientError(w, http.StatusBadRequest)
 			return
 		}
+		// reject comment if it was filled out instantly (stupid bots)
+		formTime := r.PostForm.Get("form_time")
+		if formTime != "" {
+			if t, err := strconv.ParseInt(formTime, 10, 64); err == nil {
+				if time.Now().Unix()-t < 3 {
+					http.Redirect(w, r, fmt.Sprintf("/post/%s", r.PostForm.Get("post_slug")), http.StatusSeeOther)
+					return
+				}
+			}
+		}
+		// reject comment if this field is filled, honey pot for dumb bots
 		if r.PostForm.Get("website_url") != "" {
-			// reject comment if this field is filled, honey pot for dumb bots
 			http.Redirect(w, r, fmt.Sprintf("/post/%s", r.PostForm.Get("post_slug")), http.StatusSeeOther)
 			return
 		}
