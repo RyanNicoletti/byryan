@@ -1,0 +1,44 @@
+h2 {
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--dark-green);
+}
+
+#add-comment-btn {
+  cursor: pointer;
+  text-decoration: underline;
+  margin: 1rem 0;
+}
+
+#add-comment-form.hidden {
+  display: none;
+}
+
+.hidden {
+  display: none;
+}
+
+#add-comment-form div {
+  margin-bottom: 1rem;
+}
+
+#add-comment-form label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+#add-comment-form input,
+#add-comment-form textarea {
+  width: 100%;
+  padding: 0.5rem;
+  font-family: inherit;
+}
+
+#add-comment-form textarea {
+  min-height: 100px;
+}
+
+#add-comment-form input[type="submit"] {
+  width: auto;
+  cursor: pointer;
+}
