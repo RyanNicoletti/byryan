@@ -73,6 +73,11 @@ func createComment(app *config.Application) http.Handler {
 			clientError(w, http.StatusBadRequest)
 			return
 		}
+		if r.PostForm.Get("website_url") != "" {
+			// reject comment if this field is filled, honey pot for dumb bots
+			http.Redirect(w, r, fmt.Sprintf("/post/%s", r.PostForm.Get("post_slug")), http.StatusSeeOther)
+			return
+		}
 		formData := commentFormData{
 			Name:    r.PostForm.Get("name"),
 			Comment: r.PostForm.Get("comment"),

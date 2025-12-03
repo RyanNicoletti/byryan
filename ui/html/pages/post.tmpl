@@ -12,6 +12,10 @@
 
   <form action="/comment/create" method="POST" id="add-comment-form" class="{{if not .Form.FieldErrors}}hidden{{end}}">
     <input type="hidden" name="post_slug" value="{{.Post.Slug}}">
+    <!-- Honeypot field - prevent bots from posting comments-->
+    <div style="position: absolute; left: -5000px;" aria-hidden="true">
+        <input type="text" name="website_url" tabindex="-1" autocomplete="off">
+    </div>
     <div>
       <label>Name</label>
       {{with .Form.FieldErrors.name}}
