@@ -35,7 +35,7 @@ func routes(app *config.Application) http.Handler {
 		if err != nil {
 			panic(err)
 		}
-		mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServerFS(staticFS)))
+		mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.FS(staticFS))))
 	} else {
 		mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./ui/static/"))))
 	}
