@@ -4,6 +4,14 @@ h2 {
   border-bottom: 2px solid var(--dark-green);
 }
 
+.post-content-section {
+  margin-bottom: 2rem;
+}
+
+.comments-text {
+  color: var(--dark-green);
+}
+
 #add-comment-btn {
   cursor: pointer;
   text-decoration: underline;
